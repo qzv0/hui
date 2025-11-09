@@ -1,0 +1,592 @@
+-- Services
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+local RunService = game:GetService("RunService")
+
+-- Variables
+local player = Players.LocalPlayer
+local mouse = player:GetMouse()
+
+-- Create GUI
+local gui = Instance.new("ScreenGui")
+gui.Name = "SignDeleterUI"
+gui.Parent = player.PlayerGui
+gui.ResetOnSpawn = false
+gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+-- Main Container
+local mainContainer = Instance.new("Frame")
+mainContainer.Name = "MainContainer"
+mainContainer.Size = UDim2.new(0, 350, 0, 340)
+mainContainer.Position = UDim2.new(0.5, -175, 0.3, 0)
+mainContainer.AnchorPoint = Vector2.new(0.5, 0)
+mainContainer.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+mainContainer.BorderSizePixel = 0
+mainContainer.Parent = gui
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 8)
+UICorner.Parent = mainContainer
+
+-- Header
+local header = Instance.new("Frame")
+header.Name = "Header"
+header.Size = UDim2.new(1, 0, 0, 40)
+header.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+header.BorderSizePixel = 0
+header.Parent = mainContainer
+
+local headerCorner = Instance.new("UICorner")
+headerCorner.CornerRadius = UDim.new(0, 8)
+headerCorner.Parent = header
+
+local title = Instance.new("TextLabel")
+title.Name = "Title"
+title.Size = UDim2.new(0, 200, 1, 0)
+title.Position = UDim2.new(0, 15, 0, 0)
+title.BackgroundTransparency = 1
+title.Text = "SIGN DELETER V3.0"
+title.TextColor3 = Color3.fromRGB(220, 220, 220)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 16
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.Parent = header
+
+local byText = Instance.new("TextLabel")
+byText.Name = "ByText"
+byText.Size = UDim2.new(0, 80, 1, 0)
+byText.Position = UDim2.new(1, -95, 0, 0)
+byText.BackgroundTransparency = 1
+byText.Text = "by Sharik"
+byText.TextColor3 = Color3.fromRGB(120, 120, 140)
+byText.Font = Enum.Font.Gotham
+byText.TextSize = 12
+byText.TextXAlignment = Enum.TextXAlignment.Right
+byText.Parent = header
+
+-- Close button
+local closeButton = Instance.new("TextButton")
+closeButton.Name = "CloseButton"
+closeButton.Size = UDim2.new(0, 24, 0, 24)
+closeButton.Position = UDim2.new(1, -30, 0, 8)
+closeButton.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
+closeButton.BorderSizePixel = 0
+closeButton.Text = "×"
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeButton.Font = Enum.Font.GothamBold
+closeButton.TextSize = 16
+closeButton.Parent = header
+
+local closeCorner = Instance.new("UICorner")
+closeCorner.CornerRadius = UDim.new(0, 12)
+closeCorner.Parent = closeButton
+
+-- Content
+local content = Instance.new("Frame")
+content.Name = "Content"
+content.Size = UDim2.new(1, -20, 1, -60)
+content.Position = UDim2.new(0, 10, 0, 50)
+content.BackgroundTransparency = 1
+content.Parent = mainContainer
+
+-- Search section
+local searchLabel = Instance.new("TextLabel")
+searchLabel.Name = "SearchLabel"
+searchLabel.Size = UDim2.new(1, 0, 0, 20)
+searchLabel.BackgroundTransparency = 1
+searchLabel.Text = "ПОИСК ИГРОКА"
+searchLabel.TextColor3 = Color3.fromRGB(170, 170, 190)
+searchLabel.Font = Enum.Font.GothamSemibold
+searchLabel.TextSize = 12
+searchLabel.TextXAlignment = Enum.TextXAlignment.Left
+searchLabel.Parent = content
+
+local searchContainer = Instance.new("Frame")
+searchContainer.Name = "SearchContainer"
+searchContainer.Size = UDim2.new(1, 0, 0, 36)
+searchContainer.Position = UDim2.new(0, 0, 0, 20)
+searchContainer.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+searchContainer.BorderSizePixel = 0
+searchContainer.Parent = content
+
+local searchCorner = Instance.new("UICorner")
+searchCorner.CornerRadius = UDim.new(0, 6)
+searchCorner.Parent = searchContainer
+
+local searchBox = Instance.new("TextBox")
+searchBox.Name = "SearchBox"
+searchBox.Size = UDim2.new(1, 0, 1, 0)
+searchBox.BackgroundTransparency = 1
+searchBox.PlaceholderText = "Введите ник игрока..."
+searchBox.Text = ""
+searchBox.TextColor3 = Color3.fromRGB(220, 220, 220)
+searchBox.Font = Enum.Font.Gotham
+searchBox.TextSize = 14
+searchBox.TextXAlignment = Enum.TextXAlignment.Left
+searchBox.Parent = searchContainer
+
+-- Buttons container
+local buttonsContainer = Instance.new("Frame")
+buttonsContainer.Name = "ButtonsContainer"
+buttonsContainer.Size = UDim2.new(1, 0, 0, 124)
+buttonsContainer.Position = UDim2.new(0, 0, 0, 70)
+buttonsContainer.BackgroundTransparency = 1
+buttonsContainer.Parent = content
+
+local deleteButton = Instance.new("TextButton")
+deleteButton.Name = "DeleteButton"
+deleteButton.Size = UDim2.new(1, 0, 0, 36)
+deleteButton.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
+deleteButton.BorderSizePixel = 0
+deleteButton.Text = "🗑️  УДАЛИТЬ ТАБЛИЧКИ"
+deleteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+deleteButton.Font = Enum.Font.GothamSemibold
+deleteButton.TextSize = 14
+deleteButton.Parent = buttonsContainer
+
+local deleteCorner = Instance.new("UICorner")
+deleteCorner.CornerRadius = UDim.new(0, 6)
+deleteCorner.Parent = deleteButton
+
+local highlightButton = Instance.new("TextButton")
+highlightButton.Name = "HighlightButton"
+highlightButton.Size = UDim2.new(1, 0, 0, 36)
+highlightButton.Position = UDim2.new(0, 0, 0, 44)
+highlightButton.BackgroundColor3 = Color3.fromRGB(60, 140, 200)
+highlightButton.BorderSizePixel = 0
+highlightButton.Text = "🔆  ПОДСВЕТИТЬ ТАБЛИЧКИ"
+highlightButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+highlightButton.Font = Enum.Font.GothamSemibold
+highlightButton.TextSize = 14
+highlightButton.Parent = buttonsContainer
+
+local highlightCorner = Instance.new("UICorner")
+highlightCorner.CornerRadius = UDim.new(0, 6)
+highlightCorner.Parent = highlightButton
+
+local restoreButton = Instance.new("TextButton")
+restoreButton.Name = "RestoreButton"
+restoreButton.Size = UDim2.new(1, 0, 0, 36)
+restoreButton.Position = UDim2.new(0, 0, 0, 88)
+restoreButton.BackgroundColor3 = Color3.fromRGB(70, 180, 70)
+restoreButton.BorderSizePixel = 0
+restoreButton.Text = "🔄  ВОССТАНОВИТЬ ТАБЛИЧКУ"
+restoreButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+restoreButton.Font = Enum.Font.GothamSemibold
+restoreButton.TextSize = 14
+restoreButton.Parent = buttonsContainer
+
+local restoreCorner = Instance.new("UICorner")
+restoreCorner.CornerRadius = UDim.new(0, 6)
+restoreCorner.Parent = restoreButton
+
+-- Status bar
+local statusBar = Instance.new("Frame")
+statusBar.Name = "StatusBar"
+statusBar.Size = UDim2.new(1, 0, 0, 24)
+statusBar.Position = UDim2.new(0, 0, 1, -30)
+statusBar.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+statusBar.BorderSizePixel = 0
+statusBar.Parent = content
+
+local statusCorner = Instance.new("UICorner")
+statusCorner.CornerRadius = UDim.new(0, 6)
+statusCorner.Parent = statusBar
+
+local statusIcon = Instance.new("TextLabel")
+statusIcon.Name = "StatusIcon"
+statusIcon.Size = UDim2.new(0, 24, 1, 0)
+statusIcon.BackgroundTransparency = 1
+statusIcon.Text = "✅"
+statusIcon.TextColor3 = Color3.fromRGB(150, 220, 150)
+statusIcon.Font = Enum.Font.Gotham
+statusIcon.TextSize = 14
+statusIcon.Parent = statusBar
+
+local statusLabel = Instance.new("TextLabel")
+statusLabel.Name = "StatusLabel"
+statusLabel.Size = UDim2.new(1, -30, 1, 0)
+statusLabel.Position = UDim2.new(0, 24, 0, 0)
+statusLabel.BackgroundTransparency = 1
+statusLabel.Text = "Готов к работе"
+statusLabel.TextColor3 = Color3.fromRGB(180, 180, 200)
+statusLabel.Font = Enum.Font.Gotham
+statusLabel.TextSize = 12
+statusLabel.TextXAlignment = Enum.TextXAlignment.Left
+statusLabel.Parent = statusBar
+
+-- Info section
+local infoContainer = Instance.new("Frame")
+infoContainer.Name = "InfoContainer"
+infoContainer.Size = UDim2.new(1, 0, 0, 40)
+infoContainer.Position = UDim2.new(0, 0, 1, -80)
+infoContainer.BackgroundTransparency = 1
+infoContainer.Parent = content
+
+local ownerLabel = Instance.new("TextLabel")
+ownerLabel.Name = "OwnerLabel"
+ownerLabel.Size = UDim2.new(1, 0, 0, 20)
+ownerLabel.BackgroundTransparency = 1
+ownerLabel.Text = "Владелец таблички: -"
+ownerLabel.TextColor3 = Color3.fromRGB(150, 180, 220)
+ownerLabel.Font = Enum.Font.Gotham
+ownerLabel.TextSize = 12
+ownerLabel.TextXAlignment = Enum.TextXAlignment.Left
+ownerLabel.Parent = infoContainer
+
+local hintLabel = Instance.new("TextLabel")
+hintLabel.Name = "HintLabel"
+hintLabel.Size = UDim2.new(1, 0, 0, 16)
+hintLabel.Position = UDim2.new(0, 0, 1, -16)
+hintLabel.BackgroundTransparency = 1
+hintLabel.Text = "Нажмите G на табличке для информации"
+hintLabel.TextColor3 = Color3.fromRGB(120, 120, 140)
+hintLabel.Font = Enum.Font.Gotham
+hintLabel.TextSize = 10
+hintLabel.TextXAlignment = Enum.TextXAlignment.Left
+hintLabel.Parent = infoContainer
+
+-- Variables
+local deletedSigns = {}
+local dragging = false
+local dragInput, dragStart, startPos
+local espEnabled = false
+local espObjects = {}
+
+-- Функция поиска таблички
+local function findPlayerSign(username)
+    -- Ищем табличку с разными вариантами имен
+    local patterns = {
+        username .. "'s Sign",
+        username .. "'s sign", 
+        username .. " Sign",
+        username .. " sign",
+        username .. "_Sign"
+    }
+    
+    for _, pattern in ipairs(patterns) do
+        local sign = workspace:FindFirstChild(pattern, true)
+        if sign and sign:IsA("Model") then
+            return sign
+        end
+    end
+    
+    return nil
+end
+
+-- Функция удаления таблички
+local function deleteSign(username)
+    -- Проверяем, не удалена ли уже табличка
+    if deletedSigns[username] then
+        -- Если табличка уже удалена, находим её снова
+        local sign = findPlayerSign(username)
+        if not sign then
+            return false, "Табличка уже удалена и не найдена в workspace"
+        end
+        
+        -- Обновляем данные об удаленной табличке
+        deletedSigns[username] = {
+            Clone = sign:Clone(),
+            OriginalParent = sign.Parent,
+            Position = sign:GetPivot().Position,
+            Time = os.time()
+        }
+        
+        -- Делаем табличку невидимой
+        for _, part in ipairs(sign:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.Transparency = 1
+                part.CanCollide = false
+            elseif part:IsA("Decal") or part:IsA("Texture") then
+                part.Transparency = 1
+            end
+        end
+        
+        return true, "Табличка повторно удалена: " .. username
+    end
+    
+    local sign = findPlayerSign(username)
+    if not sign then
+        return false, "Табличка не найдена"
+    end
+    
+    -- Сохраняем информацию для восстановления
+    deletedSigns[username] = {
+        Clone = sign:Clone(),
+        OriginalParent = sign.Parent,
+        Position = sign:GetPivot().Position,
+        Time = os.time()
+    }
+    
+    -- Делаем табличку невидимой
+    for _, part in ipairs(sign:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.Transparency = 1
+            part.CanCollide = false
+        elseif part:IsA("Decal") or part:IsA("Texture") then
+            part.Transparency = 1
+        end
+    end
+    
+    return true, "Табличка удалена: " .. username
+end
+
+-- Функция восстановления таблички
+local function restoreSign(username)
+    if not deletedSigns[username] then
+        return false, "Табличка не была удалена"
+    end
+    
+    local signData = deletedSigns[username]
+    
+    -- Находим текущую табличку в workspace
+    local currentSign = findPlayerSign(username)
+    if currentSign then
+        -- Восстанавливаем видимость существующей таблички
+        for _, part in ipairs(currentSign:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.Transparency = 0
+                part.CanCollide = true
+            elseif part:IsA("Decal") or part:IsA("Texture") then
+                part.Transparency = 0
+            end
+        end
+        
+        -- Обновляем клон для будущих удалений
+        signData.Clone = currentSign:Clone()
+        signData.Time = os.time()
+        
+        return true, "Табличка восстановлена: " .. username
+    else
+        -- Если таблички нет в workspace, создаем из клона
+        local newSign = signData.Clone:Clone()
+        newSign.Parent = signData.OriginalParent
+        
+        -- Обновляем клон
+        signData.Clone = newSign:Clone()
+        signData.Time = os.time()
+        
+        return true, "Табличка восстановлена из клона: " .. username
+    end
+end
+
+-- Функция включения/выключения ESP
+local function toggleESP()
+    espEnabled = not espEnabled
+    
+    -- Очищаем предыдущие ESP объекты
+    for _, obj in pairs(espObjects) do
+        if obj and obj.Parent then
+            obj:Destroy()
+        end
+    end
+    espObjects = {}
+    
+    if espEnabled then
+        statusLabel.Text = "ESP включен"
+        statusIcon.Text = "🔆"
+        highlightButton.Text = "🔆  ВЫКЛ. ПОДСВЕТКУ"
+        highlightButton.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
+        
+        -- Подсвечиваем все таблички в игре
+        for username, data in pairs(deletedSigns) do
+            -- Для удаленных табличек
+            local sign = findPlayerSign(username)
+            if sign then
+                local highlight = Instance.new("Highlight")
+                highlight.Name = username .. "_DeletedESP"
+                highlight.FillColor = Color3.fromRGB(255, 50, 50)
+                highlight.OutlineColor = Color3.fromRGB(255, 100, 100)
+                highlight.FillTransparency = 0.7
+                highlight.OutlineTransparency = 0.3
+                highlight.Adornee = sign.PrimaryPart or sign:FindFirstChildWhichIsA("BasePart")
+                highlight.Parent = CoreGui
+                table.insert(espObjects, highlight)
+            end
+        end
+        
+        -- Для обычных табличек
+        local players = Players:GetPlayers()
+        for _, player in ipairs(players) do
+            if not deletedSigns[player.Name] then
+                local sign = findPlayerSign(player.Name)
+                if sign then
+                    local highlight = Instance.new("Highlight")
+                    highlight.Name = player.Name .. "_ESP"
+                    highlight.FillColor = Color3.fromRGB(0, 255, 0)
+                    highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                    highlight.FillTransparency = 0.8
+                    highlight.OutlineTransparency = 0.2
+                    highlight.Adornee = sign.PrimaryPart or sign:FindFirstChildWhichIsA("BasePart")
+                    highlight.Parent = CoreGui
+                    table.insert(espObjects, highlight)
+                end
+            end
+        end
+    else
+        statusLabel.Text = "ESP выключен"
+        statusIcon.Text = "✅"
+        highlightButton.Text = "🔆  ПОДСВЕТИТЬ ТАБЛИЧКИ"
+        highlightButton.BackgroundColor3 = Color3.fromRGB(60, 140, 200)
+    end
+end
+
+-- Функция анимации кнопок
+local function animateButton(button)
+    local originalSize = button.Size
+    local tweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    
+    local tween1 = TweenService:Create(button, tweenInfo, {Size = originalSize - UDim2.new(0, 5, 0, 5)})
+    local tween2 = TweenService:Create(button, tweenInfo, {Size = originalSize})
+    
+    tween1:Play()
+    tween1.Completed:Connect(function()
+        tween2:Play()
+    end)
+end
+
+-- Функция перетаскивания окна (ИСПРАВЛЕННАЯ ВЕРСИЯ)
+header.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = mainContainer.Position
+        
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+header.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
+        dragInput = input
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        local delta = input.Position - dragStart
+        mainContainer.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+-- Обработчики событий кнопок
+closeButton.MouseButton1Click:Connect(function()
+    gui:Destroy()
+    for _, obj in pairs(espObjects) do
+        if obj and obj.Parent then
+            obj:Destroy()
+        end
+    end
+end)
+
+deleteButton.MouseButton1Click:Connect(function()
+    animateButton(deleteButton)
+    
+    if searchBox.Text ~= "" then
+        local success, message = deleteSign(searchBox.Text)
+        statusLabel.Text = message
+        statusIcon.Text = success and "✅" or "❌"
+        
+        -- Обновляем ESP если он включен
+        if espEnabled then
+            toggleESP() -- Выключаем
+            toggleESP() -- Включаем снова
+        end
+    else
+        statusLabel.Text = "Введите ник игрока"
+        statusIcon.Text = "⚠️"
+    end
+end)
+
+highlightButton.MouseButton1Click:Connect(function()
+    animateButton(highlightButton)
+    toggleESP()
+end)
+
+restoreButton.MouseButton1Click:Connect(function()
+    animateButton(restoreButton)
+    
+    if searchBox.Text ~= "" then
+        local success, message = restoreSign(searchBox.Text)
+        statusLabel.Text = message
+        statusIcon.Text = success and "✅" or "❌"
+        
+        -- Обновляем ESP если он включен
+        if espEnabled then
+            toggleESP() -- Выключаем
+            toggleESP() -- Включаем снова
+        end
+    else
+        statusLabel.Text = "Введите ник игрока"
+        statusIcon.Text = "⚠️"
+    end
+end)
+
+-- Определение владельца таблички по нажатию G
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    
+    if input.KeyCode == Enum.KeyCode.G then
+        local target = mouse.Target
+        if target then
+            local model = target:FindFirstAncestorOfClass("Model")
+            if model then
+                -- Проверяем, не является ли это удаленной табличкой
+                for username, data in pairs(deletedSigns) do
+                    if data.Clone.Name == model.Name then
+                        ownerLabel.Text = "Владелец таблички: " .. username
+                        searchBox.Text = username
+                        statusLabel.Text = "Определена удаленная табличка: " .. username
+                        statusIcon.Text = "✅"
+                        return
+                    end
+                end
+                
+                -- Проверяем обычные таблички
+                if model.Name:find("'s Sign") or model.Name:find(" Sign") or model.Name:find("_Sign") then
+                    local owner = model.Name:gsub("'s Sign", ""):gsub(" Sign", ""):gsub("_Sign", ""):gsub("'s sign", "")
+                    ownerLabel.Text = "Владелец таблички: " .. owner
+                    searchBox.Text = owner
+                    statusLabel.Text = "Владелец определен: " .. owner
+                    statusIcon.Text = "✅"
+                end
+            end
+        end
+    end
+end)
+
+-- Восстановление последней удаленной таблички по Ctrl+Z
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    
+    if input.KeyCode == Enum.KeyCode.Z and UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then
+        local lastUsername, lastTime = nil, 0
+        for username, data in pairs(deletedSigns) do
+            if data.Time and data.Time > lastTime then
+                lastUsername = username
+                lastTime = data.Time
+            end
+        end
+        
+        if lastUsername then
+            searchBox.Text = lastUsername
+            ownerLabel.Text = "Владелец таблички: " .. lastUsername
+            
+            local success, message = restoreSign(lastUsername)
+            statusLabel.Text = message
+            statusIcon.Text = success and "✅" or "❌"
+            
+            -- Обновляем ESP если он включен
+            if espEnabled then
+                toggleESP() -- Выключаем
+                toggleESP() -- Включаем снова
+            end
+        end
+    end
+end)
